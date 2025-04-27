@@ -1,12 +1,27 @@
-
-import Link from "next/link";
+import AppDownloadSection from "@/components/home/AppDownloadSection";
+import Banner from "@/components/home/Banner";
+import BestSellingSection from "@/components/home/BestSellingSection";
+import Category from "@/components/home/Category";
+import ProductSection from "@/components/home/ProductSection";
+import PromotionSection from "@/components/home/PromotionSection";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <Link href={"account"} className="underline underline-offset-4">
-        My Account
-      </Link>
-    </div>
+    <>
+      {/* carousel section  */}
+      <Banner />
+      {/* categories section  */}
+      <Category />
+      {/* You might need  */}
+      <ProductSection title="You might need" seeMoreLink={"/products"} />
+      {/* {big sale promotion} */}
+      <PromotionSection />
+      {/* weekly best selling section  */}
+      <BestSellingSection />
+      {/* App download section  */}
+      <AppDownloadSection />
+      {/* just for you section  */}
+      <ProductSection title="Just for you" seeMoreLink={"/products"} />
+    </>
   );
 }
