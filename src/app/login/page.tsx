@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-function page() {
+function Page() {
   const router = useRouter();
   return (
     <div className="bg-white flex flex-col items-center justify-center h-screen rounded-xl relative gap-5">
@@ -39,7 +39,7 @@ function page() {
       </form>
       <div className="text-sm text-center space-y-3">
         <p>
-          Don't have an account?{" "}
+          {"Don't have an account? "}
           <a href="/register" className="underline underline-offset-2">
             Register here
           </a>
@@ -52,4 +52,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

@@ -20,7 +20,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -216,7 +215,7 @@ function ConfirmOrder({ isConfirmOrder, setIsConfirmOrder}: { isConfirmOrder: bo
         <DialogHeader>
           <DialogTitle>Payment</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when your done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

@@ -73,7 +73,7 @@ const product: Product = {
   },
 };
 
-export default function ProductDetails({ params }: { params: { id: string } }) {
+export default function ProductDetails() {
   const router = useRouter();
   const [isMounted, setIsMounted] = React.useState(false);
 

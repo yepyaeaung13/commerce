@@ -3,7 +3,6 @@
 import Link from "next/link";
 import IconMore from "../icons/IconMore";
 import { Button } from "../ui/button";
-import Image from "next/image";
 import { categories, Category } from "./Category";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
