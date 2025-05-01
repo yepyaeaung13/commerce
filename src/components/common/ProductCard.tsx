@@ -3,8 +3,11 @@ import * as motion from "motion/react-client";
 import { useRef } from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { increment } from "@/features/cartCount.slice";
 
 export default function ProductCard({ index, handleAddToCart }: { index: number, handleAddToCart: (product: { image: string }, rect: DOMRect) => void }) {
+  const dispatch = useDispatch();
   const router = useRouter();
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -13,6 +16,7 @@ export default function ProductCard({ index, handleAddToCart }: { index: number,
     if (img) {
       const rect = img.getBoundingClientRect();
       handleAddToCart({ image: "/category/category1.png" }, rect);
+      setTimeout(() => dispatch(increment()), 1000);
     }
   };
 

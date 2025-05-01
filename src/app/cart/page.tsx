@@ -23,18 +23,34 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { decrementCartItemQty, incrementCartItemQty } from "@/features/cartDetail.slice";
+import { cn } from "@/lib/utils";
+import { RootState } from "@/store/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function CartPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { items, deliveryInfo, paymentInfo } = useSelector((state: RootState) => state.cartDetail);
   const [isConfirmOrder, setIsConfirmOrder] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  function incrementItemQty(id: number, qty: number, leftQty: number) {
+    if (qty === leftQty) return;
+    dispatch(incrementCartItemQty({ id }));
+  }
+
+  function decrementItemQty(id: number, qty: number) {
+    if (qty === 1) return; 
+    dispatch(decrementCartItemQty({ id }));
+  }
 
   return (
     <section className="bg-white px-10 py-5 rounded-xl">
@@ -82,9 +98,9 @@ export default function CartPage() {
                   Delivery to
                 </h3>
                 <p className="mt-1">
-                  No-123, Moe Kaung Road, Yankin Township, Yangon
+                 {deliveryInfo.address}
                 </p>
-                <p className="">Phone: 09898626060</p>
+                <p className="">Phone: { deliveryInfo.phoneNumber}</p>
               </div>
             </div>
           </div>
@@ -96,13 +112,13 @@ export default function CartPage() {
             </h1>
 
             <div className="mt-5 grid grid-cols-1 gap-3 pl-3 pr-10 max-h-72 overflow-y-auto">
-              {Array.from({ length: 6 }, (_, index) => (
+              {items.map(item => (
                 <div
-                  key={index}
+                  key={item.id}
                   className="bg-gray-card-color rounded-lg flex gap-3 items-center p-2"
                 >
                   <Image
-                    src={"/category/category1.png"}
+                    src={item.imageUrl}
                     alt="product"
                     width={100}
                     height={100}
@@ -110,15 +126,25 @@ export default function CartPage() {
                   />
                   <div className="w-full flex justify-between items-center">
                     <div className="text-primary-color text-sm font-semibold">
-                      <h1>Beetroot</h1>
-                      <p>17.00</p>
+                      <h1>{ item.name}</h1>
+                      <p>{ item.price.toFixed(2)}</p>
                     </div>
                     <div className="flex gap-2 mr-5">
-                      <button className="cursor-pointer active:scale-95 duration-200">
+                      <button
+                        onClick={() => decrementItemQty(item.id, item.qty)}
+                        disabled={ item.qty === 1}
+                        className={cn(
+                          item.qty === 1 ? "cursor-not-allowed opacity-30" : "cursor-pointer active:scale-95 duration-100"
+                        )}>
                         <IconMinus />
                       </button>
-                      <span>1</span>
-                      <button className="cursor-pointer active:scale-95 duration-200">
+                      <span className="inline-block w-4">{ item.qty}</span>
+                      <button
+                        onClick={() => incrementItemQty(item.id,item.qty, item.leftQty)}
+                        disabled={ item.qty === item.leftQty}
+                        className={cn(
+                          item.qty === item.leftQty ? "cursor-not-allowed opacity-30" : "cursor-pointer active:scale-95 duration-100"
+                        )}>
                         <IconPlus />
                       </button>
                     </div>
@@ -138,23 +164,23 @@ export default function CartPage() {
             <div>
               <p className="flex justify-between border-b pt-3">
                 <span className="text-gray-500">Subtotal</span>
-                <span className="font-bold text-primary-color">$ 37.58</span>
+                <span className="font-bold text-primary-color">$ {paymentInfo.subTotal }</span>
               </p>
               <p className="flex justify-between border-b pt-3">
                 <span className="text-gray-500">Delivery fees</span>
-                <span className="font-bold text-primary-color">$ 37.58</span>
+                <span className="font-bold text-primary-color">$ { paymentInfo.deliveryFees}</span>
               </p>
               <p className="flex justify-between border-b pt-3">
                 <span className="text-gray-500">Coupon Discount</span>
-                <span className="font-bold text-primary-color">$ 37.58</span>
+                <span className="font-bold text-primary-color">$ { paymentInfo.couponDiscount}</span>
               </p>
               <p className="flex justify-between border-b pt-3">
                 <span className="text-gray-500">Taxes</span>
-                <span className="font-bold text-primary-color">$ 37.58</span>
+                <span className="font-bold text-primary-color">$ { paymentInfo.taxes}</span>
               </p>
               <p className="text-lg font-bold flex justify-between border-b-2 border-primary-color pt-5">
                 <span className="text-primary-color">Total</span>
-                <span className="text-primary-color">$ 100.58</span>
+                <span className="text-primary-color">$ { paymentInfo.total}</span>
               </p>
             </div>
 

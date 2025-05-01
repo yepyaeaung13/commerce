@@ -9,13 +9,16 @@ import IconUser from "../icons/IconUser";
 import { useState } from "react";
 import Image from "next/image";
 import Overlay from "./Overlay";
-import { motion } from "motion/react"
+import { motion } from "motion/react";
 import { useFlyCart } from "@/context/FlyCartContext";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 function Navbar() {
   const { cartRef, flyData, setFlyData } = useFlyCart();
+  const { cartCount } = useSelector((state: RootState) => state.cartCount);
   const [open, setOpen] = useState(false);
-  
+
   return (
     <>
       <header className="bg-primary-color relative z-50 px-8 py-4 rounded-xl text-white">
@@ -49,9 +52,10 @@ function Navbar() {
             <Link
               ref={cartRef as React.RefObject<HTMLAnchorElement>}
               href={"/cart"}
-              className="text-primary-color bg-white rounded-full p-1.5 active:scale-95 duration-200"
+              className="relative text-primary-color bg-white rounded-full p-1.5 active:scale-95 duration-200"
             >
               <IconCart />
+              <span className="absolute -top-1 -right-1 flex justify-center items-center text-[0.65rem] text-white bg-red-500 w-5 h-5 rounded-full">{cartCount}</span>
             </Link>
             <Link
               href={"/profile"}
@@ -63,8 +67,8 @@ function Navbar() {
         </div>
       </header>
       {open && <Overlay />}
-       {/* Flying Image Animation */}
-       {flyData && (
+      {/* Flying Image Animation */}
+      {flyData && (
         <motion.img
           src={flyData.src}
           initial={{
@@ -94,19 +98,20 @@ export default Navbar;
 
 function SearchContentBox() {
   return (
-    <motion.div 
-     initial={{ opacity: 0, y: -10 }}
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.25 }}
       layout
-    className="absolute z-50 top-10 left-0 w-[425] bg-white rounded-lg shadow-md p-3 space-y-5">
+      className="absolute z-50 top-10 left-0 w-[425] bg-white rounded-lg shadow-md p-3 space-y-5"
+    >
       <motion.div transition={{ duration: 0.25 }} layout>
         <h1 className="text-black text-xs font-semibold">
           Recommended searches
         </h1>
         <div className="grid grid-cols-2 gap-3 mt-3">
-        {[1, 2].map((item) => (
+          {[1, 2].map((item) => (
             <div
               key={item}
               className="bg-gray-card-color rounded-lg flex gap-3 items-center p-2"
@@ -126,7 +131,7 @@ function SearchContentBox() {
           ))}
         </div>
       </motion.div>
-      <motion.div  transition={{ duration: 0.25 }} layout>
+      <motion.div transition={{ duration: 0.25 }} layout>
         <h1 className="text-black text-xs font-semibold">Popular searches</h1>
         <div className="grid grid-cols-2 gap-3 mt-3">
           {Array.from({ length: 6 }, (_, index) => (
