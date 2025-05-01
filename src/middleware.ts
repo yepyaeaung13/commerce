@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith(prefix)
   );
 
-  if (false) {
+  if (isProtected && token) {
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
