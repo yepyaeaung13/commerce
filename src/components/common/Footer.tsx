@@ -1,6 +1,14 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import IconLogo from "../icons/IconLogo";
 
 export default function Footer() {
+
+  const pathname = usePathname();
+
+  if (pathname === "/register" || pathname === "/login") return null;
+
   return (
     <footer className="bg-white text-primary-color mt-5 py-10">
       <div className="container mx-auto px-4">

@@ -4,7 +4,7 @@ import StoreProvider from "./StoreProvider";
 import QueryProvider from "./QueryProvider";
 import Navbar from "@/components/common/Navbar";
 import { FlyCartProvider } from "@/context/FlyCartContext";
-import Footer from "@/components/home/Footer";
+import Footer from "@/components/common/Footer";
 
 export const metadata: Metadata = {
   title: "Commerce",
@@ -44,9 +44,7 @@ export default function RootLayout({
             <FlyCartProvider>
               <main className="relative min-h-screen max-w-[1140px] mx-auto">
                 {/* navbar section */}
-                <div className="py-3 sticky top-0 bg-secondary-color left-0 z-50">
-                  <Navbar />
-                </div>
+                <Navbar />
                 {children}
                 {/* footer section  */}
                 <Footer />

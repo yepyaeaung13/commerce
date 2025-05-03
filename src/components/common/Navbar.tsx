@@ -13,14 +13,18 @@ import { motion } from "motion/react";
 import { useFlyCart } from "@/context/FlyCartContext";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { usePathname } from "next/navigation";
 
 function Navbar() {
+  const pathname = usePathname();
   const { cartRef, flyData, setFlyData } = useFlyCart();
   const { cartCount } = useSelector((state: RootState) => state.cartCount);
   const [open, setOpen] = useState(false);
 
+  if (pathname === "/login" || pathname === "/register") return null;
+
   return (
-    <>
+    <div className="py-3 sticky top-0 bg-secondary-color left-0 z-50">
       <header className="bg-primary-color relative z-50 px-8 py-4 rounded-xl text-white">
         <div className="w-full flex items-center justify-between">
           <button className="cursor-pointer">
@@ -55,10 +59,14 @@ function Navbar() {
               className="relative text-primary-color bg-white rounded-full p-1.5 active:scale-95 duration-200"
             >
               <IconCart />
-              <span className="absolute -top-1 -right-1 flex justify-center items-center text-[0.65rem] text-white bg-red-500 w-5 h-5 rounded-full">{cartCount}</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex justify-center items-center text-[0.65rem] text-white bg-red-500 w-5 h-5 rounded-full">
+                  {cartCount}
+                </span>
+              )}
             </Link>
             <Link
-              href={"/profile"}
+              href={"/login"}
               className="border border-white/25 hover:border-white/50 duration-100 rounded-full p-1.5"
             >
               <IconUser />
@@ -90,7 +98,7 @@ function Navbar() {
           style={{ zIndex: 999 }}
         />
       )}
-    </>
+    </div>
   );
 }
 
